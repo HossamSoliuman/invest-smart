@@ -66,15 +66,12 @@ class AuthenticationController extends Controller
         $user = $request->user();
         $validated = $request->validated();
 
-        if (isset($validated['email'])) {
-            $user->email = $validated['email'];
-        }
-
         if (isset($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
+            $validated['password'] = Hash::make($validated['password']);
         }
 
-        $user->save();
+        $user->fill($validated)->save();
+
 
         return $this->apiResponse(
             [
@@ -82,6 +79,10 @@ class AuthenticationController extends Controller
             ],
             'User updated successfully'
         );
+    }
+    function user(Request $request)
+    {
+        return UserResource::make($request->user());
     }
     public function verify($token)
     {

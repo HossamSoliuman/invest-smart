@@ -19,9 +19,7 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('register', [AuthenticationController::class, 'register']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
-        Route::get('user', function (Request $request) {
-            return $request->user();
-        });
+        Route::get('user', [AuthenticationController::class, 'user']);
         Route::post('logout', [AuthenticationController::class, 'logout']);
         Route::post('update', [AuthenticationController::class, 'update']);
         Route::post('verify/send', [AuthenticationController::class, 'sendVerificationMail'])->name('auth.mail.send');
