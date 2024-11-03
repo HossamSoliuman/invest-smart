@@ -6,10 +6,13 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateAuthRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\Verification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
 {
@@ -79,5 +82,26 @@ class AuthenticationController extends Controller
             ],
             'User updated successfully'
         );
+    }
+    public function verify($token)
+    {
+        $user = auth('sanctum')->user();
+        $exsitToken = $user->email_verification_token;
+        if ($exsitToken == $token) {
+            return $this->apiResponse(UserResource::make($user), 'verified');
+        }
+        return $this->apiResponse(UserResource::make($user), 'token wronk', 0);
+    }
+
+    public function sendVerificationMail()
+    {
+        $user = auth('sanctum')->user();
+        $user = User::find($user->id);
+        $token = Str::random(50);
+        $user->update([
+            'email_verification_token' => $token
+        ]);
+        // return $user;
+        Mail::to($user->email)->send(new Verification($user));
     }
 }

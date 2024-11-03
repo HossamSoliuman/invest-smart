@@ -24,5 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
         });
         Route::post('logout', [AuthenticationController::class, 'logout']);
         Route::post('update', [AuthenticationController::class, 'update']);
+        Route::post('verify/send', [AuthenticationController::class, 'sendVerificationMail'])->name('auth.mail.send');
+        Route::post('verify/{token}', [AuthenticationController::class, 'verify'])->name('auth.mail.verify');
+        Route::post('resend-verification', [AuthenticationController::class, 'resendVerification'])->name('auth.mail.resend');
     });
 });

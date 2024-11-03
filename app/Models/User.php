@@ -27,7 +27,8 @@ class User extends Authenticatable
         'role',
         'balance',
         'gender',
-        'country'
+        'country',
+        'email_verification_token'
     ];
 
 
