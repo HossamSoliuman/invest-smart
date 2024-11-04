@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('verify/{token}', [AuthenticationController::class, 'verify'])->name('auth.mail.verify');
         Route::post('resend-verification', [AuthenticationController::class, 'resendVerification'])->name('auth.mail.resend');
     });
+    Route::get('transactions', [UserDashboardController::class, 'transactions']);
 });

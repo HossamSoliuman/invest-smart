@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $role = auth()->user()->role;
-        if ($role == 'admin') {
-            return view('index');
-        } else if ($role == 'user')
-            return 'user';
+        $transactions = Transaction::with('user')->orderBy('updated_at', 'desc')->paginate(10);
+        return view('index', compact('transactions'));
     }
 }
