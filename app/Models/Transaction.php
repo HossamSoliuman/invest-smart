@@ -11,6 +11,13 @@ class Transaction extends Model
 {
 	use HasFactory;
 
+	const STATUS_PENDING = 'pending';
+	const STATUS_CONFIRMED = 'confirmed';
+	const STATUS_REFUSED = 'refused';
+
+	const TYPE_WITHDRAW = 'withdraw';
+	const TYPE_DEPOSIT = 'deposit';
+
 	protected $fillable = [
 		'user_id',
 		'amount',
