@@ -15,14 +15,33 @@
             @foreach ($transactions as $transaction)
                 <tr>
                     <th scope="row">{{ $transaction->created_at }}</th>
-                    <td>{{ $transaction->user->email }}</td>
+                    <td>
+                        <a href="{{ route('users.show', $transaction->user->id) }}">
+                            {{ $transaction->user->email }}
+                        </a>
+                    </td>
                     <td>{{ $transaction->user->account_id }}</td>
-                    <td>{{ $transaction->user->amount }}</td>
-                    <td>{{ $transaction->user->status }}</td>
-                    <td>{{ $transaction->user->transaction_type }}</td>
+                    <td>{{ $transaction->amount }}</td>
+                    <td>
+                        @if ($transaction->status === \App\Models\Transaction::STATUS_PENDING)
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        @elseif ($transaction->status === \App\Models\Transaction::STATUS_CONFIRMED)
+                            <span class="badge bg-success">Confirmed</span>
+                        @elseif ($transaction->status === \App\Models\Transaction::STATUS_REFUSED)
+                            <span class="badge bg-danger">Refused</span>
+                        @endif
+                    </td>
+
+                    <td>
+                        @if ($transaction->transaction_type === \App\Models\Transaction::TYPE_WITHDRAW)
+                            <span class="badge bg-info text-dark">Withdraw</span>
+                        @elseif ($transaction->transaction_type === \App\Models\Transaction::TYPE_DEPOSIT)
+                            <span class="badge bg-primary">Deposit</span>
+                        @endif
+                    </td>
+
                 </tr>
             @endforeach
-
         </tbody>
     </table>
 @endsection

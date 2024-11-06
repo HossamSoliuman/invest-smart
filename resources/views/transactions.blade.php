@@ -22,18 +22,22 @@
                             <div class="modal-body">
                                 <form action="{{ route('transactions.store') }}" method="post">
                                     @csrf
-									<div class="form-group">
-										<input type="text" name="user_id" class="form-control" placeholder="Transaction user_id" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="amount" class="form-control" placeholder="Transaction amount" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="address" class="form-control" placeholder="Transaction address" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="status" class="form-control" placeholder="Transaction status" required>
-									</div>
+                                    <div class="form-group">
+                                        <input type="text" name="user_id" class="form-control"
+                                            placeholder="Transaction user_id" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="amount" class="form-control"
+                                            placeholder="Transaction amount" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="address" class="form-control"
+                                            placeholder="Transaction address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="status" class="form-control"
+                                            placeholder="Transaction status" required>
+                                    </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -58,18 +62,22 @@
                                 <form id="editForm" method="post">
                                     @csrf
                                     @method('PUT')@csrf
-									<div class="form-group">
-										<input type="text" name="user_id" class="form-control" placeholder="Transaction user_id" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="amount" class="form-control" placeholder="Transaction amount" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="address" class="form-control" placeholder="Transaction address" required>
-									</div>
-									<div class="form-group">
-										<input type="text" name="status" class="form-control" placeholder="Transaction status" required>
-									</div>
+                                    <div class="form-group">
+                                        <input type="text" name="user_id" class="form-control"
+                                            placeholder="Transaction user_id" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="amount" class="form-control"
+                                            placeholder="Transaction amount" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="address" class="form-control"
+                                            placeholder="Transaction address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="status" class="form-control"
+                                            placeholder="Transaction status" required>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -83,20 +91,20 @@
                 <table class="table">
                     <thead>
                         <tr>
-							<th> User_id</th>
-							<th> Amount</th>
-							<th> Address</th>
-							<th> Status</th>
+                            <th> User_id</th>
+                            <th> Amount</th>
+                            <th> Address</th>
+                            <th> Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach ($transactions as $transaction)
+                        @foreach ($transactions as $transaction)
                             <tr data-transaction-id="{{ $transaction->id }}">
-							<td class=" transaction-user_id">{{ $transaction->user_id }}</td>
-							<td class=" transaction-amount">{{ $transaction->amount }}</td>
-							<td class=" transaction-address">{{ $transaction->address }}</td>
-							<td class=" transaction-status">{{ $transaction->status }}</td>
+                                <td class=" transaction-user_id">{{ $transaction->user_id }}</td>
+                                <td class=" transaction-amount">{{ $transaction->amount }}</td>
+                                <td class=" transaction-address">{{ $transaction->address }}</td>
+                                <td class=" transaction-status">{{ $transaction->status }}</td>
                                 <td class="d-flex">
                                     <button type="button" class="btn btn-warning btn-edit" data-toggle="modal"
                                         data-target="#editModal">
@@ -119,14 +127,14 @@
     <script>
         $(document).ready(function() {
             $('.btn-edit').on('click', function() {
-				var TransactionUser_id = $(this).closest("tr").find(".transaction-user_id").text();
-				$('#editModal input[name="user_id"]').val(TransactionUser_id);
-				var TransactionAmount = $(this).closest("tr").find(".transaction-amount").text();
-				$('#editModal input[name="amount"]').val(TransactionAmount);
-				var TransactionAddress = $(this).closest("tr").find(".transaction-address").text();
-				$('#editModal input[name="address"]').val(TransactionAddress);
-				var TransactionStatus = $(this).closest("tr").find(".transaction-status").text();
-				$('#editModal input[name="status"]').val(TransactionStatus);
+                var TransactionUser_id = $(this).closest("tr").find(".transaction-user_id").text();
+                $('#editModal input[name="user_id"]').val(TransactionUser_id);
+                var TransactionAmount = $(this).closest("tr").find(".transaction-amount").text();
+                $('#editModal input[name="amount"]').val(TransactionAmount);
+                var TransactionAddress = $(this).closest("tr").find(".transaction-address").text();
+                $('#editModal input[name="address"]').val(TransactionAddress);
+                var TransactionStatus = $(this).closest("tr").find(".transaction-status").text();
+                $('#editModal input[name="status"]').val(TransactionStatus);
                 var TransactionId = $(this).closest('tr').data('transaction-id');
                 $('#editForm').attr('action', '/transactions/' + TransactionId);
                 $('#editModal').modal('show');
