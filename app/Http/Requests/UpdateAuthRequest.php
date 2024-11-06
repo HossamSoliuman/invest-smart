@@ -24,13 +24,10 @@ class UpdateAuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'nullable|string|email|unique:users|max:255',
             'password' => 'nullable|string|min:8',
             'name' => 'nullable|string|max:255',
-            'user_name' => 'nullable|string|max:255|unique:users',
             'phone' => 'nullable|string|max:15|unique:users',
             'country' => 'nullable|string|max:255',
-            'gender' => 'nullable|in:male,female,other',
             'age' => 'nullable|integer|min:0|max:120',
         ];
     }
