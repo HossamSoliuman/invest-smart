@@ -27,6 +27,7 @@ Route::post('temp/store', [TempFileController::class, 'store'])->name('upload');
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::post('transactions/status', [TransactionController::class, 'changeStatus'])->name('transactions.status');
     Route::apiResource('transactions', TransactionController::class);
     Route::resource('users', UserController::class);
 });
