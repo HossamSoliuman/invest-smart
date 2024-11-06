@@ -22,7 +22,7 @@ class AuthenticationController extends Controller
         $validData = $request->validated();
         $accountId = Str::random(20);
         $validData['password'] = Hash::make($validData['password']);
-        $validData['accountId'] = $accountId;
+        $validData['account_id'] = $accountId;
         $user = User::create($validData);
         $token = $user->createToken('auth_token')->plainTextToken;
         $user = User::find($user->id);
