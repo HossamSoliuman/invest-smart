@@ -26,7 +26,7 @@ class UpdateAuthRequest extends FormRequest
         return [
             'password' => 'nullable|string|min:8',
             'name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:15|unique:users',
+            'phone' => 'nullable|string|max:25',
             'country' => 'nullable|string|max:255',
             'age' => 'nullable|integer|min:0|max:120',
         ];
