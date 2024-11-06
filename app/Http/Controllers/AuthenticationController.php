@@ -20,7 +20,9 @@ class AuthenticationController extends Controller
     public function register(RegisterRequest $request)
     {
         $validData = $request->validated();
+        $accountId = Str::random(20);
         $validData['password'] = Hash::make($validData['password']);
+        $validData['accountId'] = $accountId;
         $user = User::create($validData);
         $token = $user->createToken('auth_token')->plainTextToken;
         $user = User::find($user->id);
