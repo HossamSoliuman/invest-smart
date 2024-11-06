@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             <th>Account ID</th>
-                            <th>Username</th>
+                            <th>Balance</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Actions</th>
@@ -31,7 +31,7 @@
                         @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->account_id }}</td>
-                                <td>{{ $user->user_name }}</td>
+                                <td>{{ $user->balance }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
                                 <td>
