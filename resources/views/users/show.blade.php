@@ -11,10 +11,6 @@
                             <td>{{ $user->account_id }}</td>
                         </tr>
                         <tr>
-                            <th>Username</th>
-                            <td>{{ $user->user_name }}</td>
-                        </tr>
-                        <tr>
                             <th>Name</th>
                             <td>{{ $user->name }}</td>
                         </tr>
