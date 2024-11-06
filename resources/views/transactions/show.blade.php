@@ -34,15 +34,17 @@
                 <td>{{ $transaction->created_at }}</td>
             </tr>
         </table>
-        <div class="mt-4 d-flex">
-            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>
-            <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
-                @csrf
-                <input type="hidden" name="transaction" value="{{ $transaction->id }}">
-                <input type="hidden" name="status" value="refused">
-                <button type="submit" class="btn btn-danger">Refuse</button>
-            </form>
-        </div>
+        @if ($transaction->status == 'pending')
+            <div class="mt-4 d-flex">
+                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>
+                <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="transaction" value="{{ $transaction->id }}">
+                    <input type="hidden" name="status" value="refused">
+                    <button type="submit" class="btn btn-danger">Refuse</button>
+                </form>
+            </div>
+        @endif
 
         <h4 class="mt-4">User Details</h4>
         <table class="table table-bordered">
