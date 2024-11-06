@@ -4,10 +4,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TempFileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,4 +31,11 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::post('transactions/status', [TransactionController::class, 'changeStatus'])->name('transactions.status');
     Route::apiResource('transactions', TransactionController::class);
     Route::resource('users', UserController::class);
+});
+
+Route::get('test', function () {
+    foreach (User::all() as $user)
+        $user->update([
+            'account_id' => Str::random(20)
+        ]);
 });
