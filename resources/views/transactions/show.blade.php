@@ -112,11 +112,10 @@
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Account Id</th>
-                    <th scope="col">Address</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Status</th>
                     <th scope="col">Transaction Type</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -128,8 +127,6 @@
                                 {{ $transaction->user->email }}
                             </a>
                         </td>
-                        <td>{{ $transaction->user->account_id }}</td>
-                        <td>{{ $transaction->address }}</td>
                         <td>{{ $transaction->amount }}</td>
                         <td>
                             @if ($transaction->status === \App\Models\Transaction::STATUS_PENDING)
@@ -147,7 +144,10 @@
                             @elseif ($transaction->transaction_type === \App\Models\Transaction::TYPE_DEPOSIT)
                                 <span class="badge bg-primary">Deposit</span>
                             @endif
-                        </td </tr>
+                        </td>
+                        <td><a href="{{ route('transactions.show', ['transaction' => $transaction->id]) }}">show</a>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
