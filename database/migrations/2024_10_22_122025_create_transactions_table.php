@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();;
             $table->integer('amount');
             $table->string('address');
+            $table->string('img')->nullable();
             $table->string('transaction_type');
             $table->string('status');
             $table->timestamps();

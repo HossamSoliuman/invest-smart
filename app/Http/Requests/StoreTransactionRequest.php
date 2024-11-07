@@ -24,8 +24,9 @@ class StoreTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-			'amount' => ['integer', 'required'],
-			'address' => ['string', 'max:255', 'required'],
+            'amount' => ['integer', 'required'],
+            'address' => ['string', 'max:255', 'required'],
+            'img' => ['nullable'],
         ];
     }
 }
