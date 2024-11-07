@@ -29,6 +29,13 @@
                 <th>Type</th>
                 <td>{{ ucfirst($transaction->transaction_type) }}</td>
             </tr>
+            @if ($transaction->transaction_type == 'deposit')
+                <tr>
+                    <th>Image</th>
+                    {{ $transaction->img }}
+                    <td> <img src="{{ $transaction->img }}" alt="" width="200px"></td>
+                </tr>
+            @endif
             <tr>
                 <th>Date</th>
                 <td>{{ $transaction->created_at }}</td>

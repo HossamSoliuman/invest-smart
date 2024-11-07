@@ -51,7 +51,7 @@ class UserController extends Controller
     }
     public function deposit(DepositRequest $request)
     {
-        $path = $this->uploadFile($request->validated('img'), 'transactions/imgs');
+        $path = $this->uploadFile($request->validated('img'), 'transaction-files/imgs');
         $validatedData = $request->validated();
         $validatedData['img'] = $path;
         $validatedData['user_id'] = $request->user()->id;
