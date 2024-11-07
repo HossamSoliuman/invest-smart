@@ -2,78 +2,88 @@
 @section('content')
     <div class="container mt-4">
         <h4>Transaction Details</h4>
-        <table class="table table-bordered">
-            <tr>
-                <th>Transaction ID</th>
-                <td>{{ $transaction->id }}</td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>{{ $transaction->amount }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ $transaction->address }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>
-                    <span
-                        class="badge 
-                        {{ $transaction->status === 'confirmed' ? 'bg-success' : ($transaction->status === 'refused' ? 'bg-danger' : 'bg-warning text-dark') }}">
-                        {{ ucfirst($transaction->status) }}
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ ucfirst($transaction->transaction_type) }}</td>
-            </tr>
-            @if ($transaction->transaction_type == 'deposit')
-                <tr>
-                    <th>Image</th>
-                    {{ $transaction->img }}
-                    <td> <img src="{{ $transaction->img }}" alt="" width="200px"></td>
-                </tr>
-            @endif
-            <tr>
-                <th>Date</th>
-                <td>{{ $transaction->created_at }}</td>
-            </tr>
-        </table>
-        @if ($transaction->status == 'pending')
-            <div class="mt-4 d-flex">
-                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>
-                <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
-                    @csrf
-                    <input type="hidden" name="transaction" value="{{ $transaction->id }}">
-                    <input type="hidden" name="status" value="refused">
-                    <button type="submit" class="btn btn-danger">Refuse</button>
-                </form>
+        <div class="transaction-details border p-5 shadow-sm">
+            <div class="d-flex">
+                <div class="left w-50">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Transaction ID</th>
+                            <td>{{ $transaction->id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Amount</th>
+                            <td>{{ $transaction->amount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{{ $transaction->address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <span
+                                    class="badge 
+                                {{ $transaction->status === 'confirmed' ? 'bg-success' : ($transaction->status === 'refused' ? 'bg-danger' : 'bg-warning text-dark') }}">
+                                    {{ ucfirst($transaction->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td>{{ ucfirst($transaction->transaction_type) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Date</th>
+                            <td>{{ $transaction->created_at }}</td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <div class="right right flex-fill d-flex align-items-center justify-content-center">
+                    @if ($transaction->transaction_type == 'deposit')
+                        <img src="{{ asset($transaction->img) }}" alt="" width="200px"></td>
+                    @endif
+                </div>
             </div>
-            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmModalLabel">Confirm Transaction</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to confirm this transaction?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
-                                @csrf
-                                <input type="hidden" name="transaction" value="{{ $transaction->id }}">
-                                <input type="hidden" name="status" value="confirmed">
-                                <button type="submit" class="btn btn-success">Confirm</button>
-                            </form>
+            @if ($transaction->status == 'pending')
+                <div class="mt-4 d-flex">
+                    <button class="btn btn-success me-2" data-bs-toggle="modal"
+                        data-bs-target="#confirmModal">Confirm</button>
+                    <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
+                        @csrf
+                        <input type="hidden" name="transaction" value="{{ $transaction->id }}">
+                        <input type="hidden" name="status" value="refused">
+                        <button type="submit" class="btn btn-danger">Refuse</button>
+                    </form>
+                </div>
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm Transaction</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to confirm this transaction?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form action="{{ route('transactions.status') }}" method="post" style="display: inline;">
+                                    @csrf
+                                    <input type="hidden" name="transaction" value="{{ $transaction->id }}">
+                                    <input type="hidden" name="status" value="confirmed">
+                                    <button type="submit" class="btn btn-success">Confirm</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
 
         <h4 class="mt-4">User Details</h4>
         <table class="table table-bordered">
