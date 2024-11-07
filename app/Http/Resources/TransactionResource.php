@@ -15,13 +15,14 @@ class TransactionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=> $this->id,
-			'user' => UserResource::make($this->whenLoaded('user')),
-			'amount' => $this->amount,
-			'address' => $this->address,
-			'status' => $this->status,
+            'id' => $this->id,
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'amount' => $this->amount,
+            'address' => $this->address,
+            'img' => $this->img,
+            'status' => $this->status,
+            'transaction_type' => $this->transaction_type,
             'created_at' => $this->created_at,
-            'last_update' => $this->updated_at,
         ];
     }
 }

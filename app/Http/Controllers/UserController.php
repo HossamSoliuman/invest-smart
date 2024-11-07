@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepositRequest;
 use App\Http\Requests\WithdrawRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class UserController extends Controller
         $validatedData['transaction_type'] = Transaction::TYPE_WITHDRAW;
         $transaction = Transaction::create($validatedData);
 
-        return $this->apiResponse($transaction, 'Created');
+        return $this->apiResponse(TransactionResource::make($transaction), 'Created');
     }
     public function deposit(DepositRequest $request)
     {
@@ -56,8 +57,9 @@ class UserController extends Controller
         $validatedData['user_id'] = $request->user()->id;
         $validatedData['status'] = Transaction::STATUS_PENDING;
         $validatedData['transaction_type'] = Transaction::TYPE_DEPOSIT;
-        $transaction = Transaction::create($validatedData);
 
-        return $this->apiResponse($transaction, 'Created');
+        $transaction = Transaction::create($validatedData);
+        $transaction->refresh();
+        return $this->apiResponse(TransactionResource::make($transaction), 'Created');
     }
 }
