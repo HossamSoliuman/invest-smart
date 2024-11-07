@@ -34,11 +34,12 @@ Route::middleware('auth', 'admin')->group(function () {
 });
 
 Route::get('test', function () {
-    $latestUser = User::latest('account_id')->first();
-    $accountId = $latestUser ? str_pad((int)$latestUser->account_id + 1, 5, '0', STR_PAD_LEFT) : '00001';
-    $latestUser->update([
-        'account_id' => 34323
-    ]);
-    foreach (User::all() as $user) {
+    $accountId = 34356;
+    foreach (User::orderBy('id')->get() as $user) {
+        $user->update([
+            'account_id' => str_pad($accountId, 5, '0', STR_PAD_LEFT)
+        ]);
+        $accountId++;
     }
 });
+
