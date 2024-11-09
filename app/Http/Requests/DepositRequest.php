@@ -24,7 +24,7 @@ class DepositRequest extends FormRequest
         return [
             'amount' => ['integer', 'required'],
             'address' => ['string', 'max:255', 'required'],
-            'img' => ['nullable']
+            'img' => ['required','image']
         ];
     }
 }
