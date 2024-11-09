@@ -12,6 +12,16 @@ class UserDashboardController extends Controller
     {
         $user = $request->user();
         $transactions = Transaction::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
-        return $this->apiResponse(TransactionResource::collection($transactions));
+        return $this->apiResponse([
+            'data' => TransactionResource::collection($transactions),
+            'pagination' => [
+                'total' => $transactions->total(),
+                'count' => $transactions->count(),
+                'per_page' => $transactions->perPage(),
+                'current_page' => $transactions->currentPage(),
+                'last_page' => $transactions->lastPage(),
+            ],
+        ]);
+        
     }
 }
