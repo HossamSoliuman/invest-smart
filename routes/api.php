@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Http\Request;
@@ -31,4 +32,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('withdraw', [UserController::class, 'withdraw']);
     Route::post('deposit', [UserController::class, 'deposit']);
     Route::get('transactions', [UserDashboardController::class, 'transactions']);
+    Route::post('support', [SupportController::class, 'store']);
 });

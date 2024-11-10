@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TempFileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::post('transactions/status', [TransactionController::class, 'changeStatus'])->name('transactions.status');
     Route::apiResource('transactions', TransactionController::class);
     Route::resource('users', UserController::class);
+    Route::get('support', [SupportController::class, 'index'])->name('support.index');
+    Route::get('support/{support}', [SupportController::class, 'show'])->name('support.show');
 });
 
 Route::get('test', function () {
@@ -42,4 +45,3 @@ Route::get('test', function () {
         $accountId++;
     }
 });
-
