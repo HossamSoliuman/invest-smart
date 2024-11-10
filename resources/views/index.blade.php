@@ -16,11 +16,14 @@
                 <tr>
                     <th scope="row">{{ $transaction->created_at }}</th>
                     <td>
+                        {{ $transaction->user->email }}
+
+                    </td>
+                    <td>
                         <a href="{{ route('users.show', $transaction->user->id) }}">
-                            {{ $transaction->user->email }}
+                            {{ $transaction->user->account_id }}
                         </a>
                     </td>
-                    <td>{{ $transaction->user->account_id }}</td>
                     <td>{{ $transaction->amount }}</td>
                     <td>
                         @if ($transaction->status === \App\Models\Transaction::STATUS_PENDING)
