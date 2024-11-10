@@ -33,6 +33,12 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return to_route('users.index');
+    }
+
 
     public function withdraw(WithdrawRequest $request)
     {
