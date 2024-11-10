@@ -29,6 +29,7 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
+                            @continue($user->role == 'admin')
                             <tr>
                                 <td>{{ $user->account_id }}</td>
                                 <td>{{ $user->balance }}</td>
