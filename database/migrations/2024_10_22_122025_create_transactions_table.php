@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->string('address');
             $table->string('img')->nullable();
+            $table->string('currency')->nullable();
             $table->string('transaction_type');
             $table->string('status');
             $table->timestamps();

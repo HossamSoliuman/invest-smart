@@ -23,6 +23,7 @@ class WithdrawRequest extends FormRequest
     {
         return [
             'amount' => ['integer', 'required'],
+            'currency' => ['string', 'required'],
             'address' => ['string', 'max:255', 'required'],
         ];
     }

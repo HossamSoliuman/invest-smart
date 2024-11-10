@@ -15,6 +15,10 @@
                             <td>{{ $transaction->amount }}</td>
                         </tr>
                         <tr>
+                            <th>Currency</th>
+                            <td>{{ $transaction->currency }}</td>
+                        </tr>
+                        <tr>
                             <th>Address</th>
                             <td>{{ $transaction->address }}</td>
                         </tr>
