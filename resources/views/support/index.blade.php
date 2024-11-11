@@ -9,6 +9,7 @@
                         <tr>
                             <th> Account ID</th>
                             <th> Message</th>
+                            <th> Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -17,6 +18,14 @@
                             <tr data-support-id="{{ $support->id }}">
                                 <td class=" support-user_id">{{ $support->user->account_id }}</td>
                                 <td class=" support-message">{{ Str::limit($support->message, 50, '...') }}</td>
+                                <td class="support-user_id">
+                                    <span
+                                        class="{{ $support->status == 'closed' ? 'text-danger' : ($support->status == 'open' ? 'text-info' : 'text-warning') }}">
+                                        {{ ucfirst($support->status) }}
+                                    </span>
+
+                                </td>
+
                                 <td class="d-flex">
                                     <a href="{{ route('support.show', ['support' => $support->id]) }}">show</a>
                                 </td>

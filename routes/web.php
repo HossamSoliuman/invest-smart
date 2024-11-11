@@ -33,6 +33,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::apiResource('transactions', TransactionController::class);
     Route::resource('users', UserController::class);
     Route::get('support', [SupportController::class, 'index'])->name('support.index');
+    Route::get('support/{support}/{status}', [SupportController::class, 'updateStatus'])->name('support.update-status');
     Route::get('support/{support}', [SupportController::class, 'show'])->name('support.show');
 });
 

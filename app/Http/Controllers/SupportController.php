@@ -12,7 +12,7 @@ class SupportController extends Controller
 
     public function index()
     {
-        $supports = Support::with('user')->get();
+        $supports = Support::with('user')->orderBy('id','desc')->get();
         $supports = SupportResource::collection($supports);
         return view('support.index', compact('supports'));
     }
@@ -35,5 +35,6 @@ class SupportController extends Controller
         $support->update([
             'status' => $status
         ]);
+        return to_route('support.show', ['support' => $support->id]);
     }
 }
