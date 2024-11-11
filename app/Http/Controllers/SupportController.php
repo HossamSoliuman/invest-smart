@@ -30,4 +30,10 @@ class SupportController extends Controller
         $support->load('user');
         return view('support.show', compact('support'));
     }
+    public function updateStatus(Support $support, $status)
+    {
+        $support->update([
+            'status' => $status
+        ]);
+    }
 }

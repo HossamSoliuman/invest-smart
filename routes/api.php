@@ -33,4 +33,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('deposit', [UserController::class, 'deposit']);
     Route::get('transactions', [UserDashboardController::class, 'transactions']);
     Route::post('support', [SupportController::class, 'store']);
+    Route::get('tickets', [UserController::class, 'tickets']);
 });

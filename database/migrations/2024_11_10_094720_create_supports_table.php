@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('supports', function (Blueprint $table) {
             $table->id();
-			$table->text('message');
-			$table->foreignId('user_id')->constrained()->cascadeOnDelete();;
+            $table->text('message');
+            $table->string('status')->default('open');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();;
             $table->timestamps();
         });
     }

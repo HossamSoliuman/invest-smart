@@ -68,4 +68,11 @@ class UserController extends Controller
         $transaction->refresh();
         return $this->apiResponse(TransactionResource::make($transaction), 'Created');
     }
+    public function tickets(Request $request)
+    {
+        $user = User::with(['supports' => function ($q) {
+            $q->orderBy('updated_at', 'desc');
+        }])->find($request->user()->id);
+        return $this->apiResponse($user->supports);
+    }
 }
