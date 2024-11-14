@@ -15,10 +15,18 @@ class TransactionController extends LichtBaseController
 
     public function index()
     {
-        $transactions = Transaction::where('status', Transaction::STATUS_PENDING)->get();
-        $transactions = TransactionResource::collection($transactions);
-        return view('transactions.index', compact('transactions'));
+        $withdrawals = Transaction::where('status', Transaction::STATUS_PENDING)
+            ->where('transaction_type', Transaction::TYPE_WITHDRAW)
+            ->paginate(5, ['*'], 'withdrawalsPage');
+
+        $deposits = Transaction::where('status', Transaction::STATUS_PENDING)
+            ->where('transaction_type', Transaction::TYPE_DEPOSIT)
+            ->paginate(5, ['*'], 'depositsPage');
+
+        return view('transactions.index', compact('withdrawals', 'deposits'));
     }
+
+
 
     public function store(StoreTransactionRequest $request)
     {
