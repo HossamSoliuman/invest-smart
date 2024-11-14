@@ -18,14 +18,20 @@ class UserController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('user_name', 'like', "%{$search}%")
-                ->orWhere('account_id', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('user_name', 'like', "%{$search}%")
+                    ->orWhere('account_id', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
         }
 
-        $users = $query->paginate(10);
-        return view('users.index', compact('users'));
+        $activeUsers = (clone $query)->whereHas('transactions')->paginate(5, ['*'], 'activePage');
+        $inactiveUsers = (clone $query)->whereDoesntHave('transactions')->paginate(5, ['*'], 'inactivePage');
+
+        return view('users.index', compact('activeUsers', 'inactiveUsers'));
     }
+
+
 
     public function show(User $user)
     {
