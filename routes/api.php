@@ -19,9 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [AuthenticationController::class, 'login']);
-Route::post('register', [AuthenticationController::class, 'register']);
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('throttle:4,1')->group(function () {
+    Route::post('login', [AuthenticationController::class, 'login']);
+    Route::post('register', [AuthenticationController::class, 'register']);
+});
+
+Route::middleware(['auth:sanctum', 'throttle:3,1'])->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('user', [AuthenticationController::class, 'user']);
         Route::post('logout', [AuthenticationController::class, 'logout']);
@@ -29,11 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('verify/send', [VerificationController::class, 'send'])->name('auth.verify.send');
         Route::post('verify/check', [VerificationController::class, 'check'])->name('auth.mail.verify');
     });
-    Route::middleware('verified')->group(function () {
+    Route::middleware('verified', 'throttle:3,1')->group(function () {
         Route::post('withdraw', [UserController::class, 'withdraw']);
         Route::post('deposit', [UserController::class, 'deposit']);
     });
     Route::get('transactions', [UserDashboardController::class, 'transactions']);
-    Route::post('support', [SupportController::class, 'store']);
+    Route::post('support', [SupportController::class, 'store'])->middleware('throttle:3,1');
     Route::get('tickets', [UserController::class, 'tickets']);
 });

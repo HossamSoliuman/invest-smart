@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Throwable;
 use App\Traits\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -73,6 +74,7 @@ class Handler extends ExceptionHandler
         }
         return redirect()->guest(route('login'));
     }
+
     protected function notFound($request, NotFoundHttpException $exception)
     {
         if ($request->expectsJson()) {
@@ -81,6 +83,7 @@ class Handler extends ExceptionHandler
 
         abort(404, 'Route not found');
     }
+
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
@@ -89,7 +92,12 @@ class Handler extends ExceptionHandler
         if ($exception instanceof NotFoundHttpException && $request->wantsJson()) {
             return $this->apiResponse(null, 'Endpoint not exist', 0, 404);
         }
-
+        if ($exception instanceof ThrottleRequestsException) {
+            if ($request->expectsJson()) {
+                return $this->apiResponse(null, 'You have exceeded the maximum number of allowed attempts. Please try again later.', 0, 429);
+                return response('Too Many Attempts.', 429);
+            }
+        }
         return parent::render($request, $exception);
     }
 }
