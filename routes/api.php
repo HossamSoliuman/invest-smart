@@ -24,12 +24,12 @@ Route::middleware('throttle:4,1')->group(function () {
     Route::post('register', [AuthenticationController::class, 'register']);
 });
 
-Route::middleware(['auth:sanctum', 'throttle:3,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:10,1'])->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('user', [AuthenticationController::class, 'user']);
         Route::post('logout', [AuthenticationController::class, 'logout']);
         Route::post('update', [AuthenticationController::class, 'update']);
-        Route::post('verify/send', [VerificationController::class, 'send'])->name('auth.verify.send');
+        Route::post('verify/send', [VerificationController::class, 'send'])->name('auth.verify.send')->middleware('throttle:1,1');
         Route::post('verify/check', [VerificationController::class, 'check'])->name('auth.mail.verify');
     });
     Route::middleware('verified', 'throttle:3,1')->group(function () {
