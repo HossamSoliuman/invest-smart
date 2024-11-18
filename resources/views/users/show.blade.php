@@ -30,6 +30,20 @@
                             <th>Balance</th>
                             <td>{{ $user->balance }}</td>
                         </tr>
+                        <tr>
+                            <th>Email Verified</th>
+                            <td>
+                                @if ($user->email_verified_at != null)
+                                    <span class="badge bg-success">Verified</span>
+                                @else
+                                    <span class="badge bg-warning text-dark">Not Verified</span>
+                                    <form action="{{ route('users.verify', $user->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary btn-sm">Verify User</button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to list</a>

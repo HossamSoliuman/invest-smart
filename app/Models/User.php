@@ -30,6 +30,7 @@ class User extends Authenticatable
         'country',
         'email_verification_code',
         'email_verification_count',
+        'email_verified_at',
         'last_mail_at',
         'account_id'
     ];

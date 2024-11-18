@@ -35,6 +35,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('support', [SupportController::class, 'index'])->name('support.index');
     Route::get('support/{support}/{status}', [SupportController::class, 'updateStatus'])->name('support.update-status');
     Route::get('support/{support}', [SupportController::class, 'show'])->name('support.show');
+    Route::post('/users/{id}/verify', [UserController::class, 'verify'])->name('users.verify');
 });
 
 Route::get('test', function () {

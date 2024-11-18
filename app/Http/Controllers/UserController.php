@@ -30,6 +30,20 @@ class UserController extends Controller
 
         return view('users.index', compact('activeUsers', 'inactiveUsers'));
     }
+    public function verify($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->email_verified_at) {
+            return redirect()->back()->with('status', 'User is already verified.');
+        }
+
+        $user->update(['email_verified_at' => now()]);
+        
+
+        return redirect()->back()->with('status', 'User has been successfully verified.');
+    }
+
 
 
 
