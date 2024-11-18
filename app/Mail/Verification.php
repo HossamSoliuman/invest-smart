@@ -18,12 +18,12 @@ class Verification extends Mailable
 
     public function build()
     {
-        $verificationUrl = route('auth.mail.verify', ['token' => $this->user->email_verification_token]);
+        $verificationCode =  $this->user->email_verification_code;
         return $this->subject('Verify Your Email Address')
             ->view('auth.sendMail')
             ->with([
                 'userName' => $this->user->name,
-                'verificationUrl' => $verificationUrl,
+                'verificationCode' => $verificationCode,
             ]);
     }
 }

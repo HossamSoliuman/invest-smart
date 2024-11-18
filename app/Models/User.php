@@ -28,11 +28,16 @@ class User extends Authenticatable
         'balance',
         'gender',
         'country',
-        'email_verification_token',
+        'email_verification_code',
+        'email_verification_count',
+        'last_mail_at',
         'account_id'
     ];
 
-
+    public function getEmailVerifiedAttribute()
+    {
+        return $this->email_verified_at ? 1 : 0;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -57,7 +62,8 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
-	public function supports(){
-		return $this->hasMany(Support::class);
-	}
+    public function supports()
+    {
+        return $this->hasMany(Support::class);
+    }
 }

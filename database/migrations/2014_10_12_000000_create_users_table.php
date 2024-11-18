@@ -24,7 +24,9 @@ return new class extends Migration
             $table->integer('age')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('email_verification_token')->nullable();
+            $table->timestamp('last_mail_at')->nullable();
+            $table->string('email_verification_code')->nullable();
+            $table->integer('email_verification_count')->nullable();
             $table->string('password');
             $table->string('role')->default('user');
             $table->integer('balance')->default(0);

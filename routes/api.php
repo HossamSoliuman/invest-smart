@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,12 +26,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [AuthenticationController::class, 'user']);
         Route::post('logout', [AuthenticationController::class, 'logout']);
         Route::post('update', [AuthenticationController::class, 'update']);
-        Route::post('verify/send', [AuthenticationController::class, 'sendVerificationMail'])->name('auth.mail.send');
-        Route::post('verify/{token}', [AuthenticationController::class, 'verify'])->name('auth.mail.verify');
-        Route::post('resend-verification', [AuthenticationController::class, 'resendVerification'])->name('auth.mail.resend');
+        Route::post('verify/send', [VerificationController::class, 'send'])->name('auth.verify.send');
+        Route::post('verify/check', [VerificationController::class, 'check'])->name('auth.mail.verify');
     });
-    Route::post('withdraw', [UserController::class, 'withdraw']);
-    Route::post('deposit', [UserController::class, 'deposit']);
+    Route::middleware('verified')->group(function () {
+        Route::post('withdraw', [UserController::class, 'withdraw']);
+        Route::post('deposit', [UserController::class, 'deposit']);
+    });
     Route::get('transactions', [UserDashboardController::class, 'transactions']);
     Route::post('support', [SupportController::class, 'store']);
     Route::get('tickets', [UserController::class, 'tickets']);
