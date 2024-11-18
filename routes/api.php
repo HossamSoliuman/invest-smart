@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('throttle:4,1')->group(function () {
+Route::middleware('throttle:1,1')->group(function () {
     Route::post('login', [AuthenticationController::class, 'login']);
     Route::post('register', [AuthenticationController::class, 'register']);
 });
