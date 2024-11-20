@@ -24,7 +24,7 @@ class AuthenticationController extends Controller
 
         $recaptchaToken = $request->validated('recaptcha');
         $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
-        
+
         if (!$isValidRecaptcha) {
             return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
         }
@@ -46,20 +46,17 @@ class AuthenticationController extends Controller
             ],
         );
     }
-    function validateRecaptcha($recaptchaToken)
-    {
-        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('RECAPTCHA_SECRET'),
-            'response' => $recaptchaToken,
-        ]);
-
-        return $response->json()['success'] ?? false;
-    }
 
 
     public function login(LoginRequest $request)
     {
         $validated = $request->validated();
+
+        $recaptchaToken = $request->validated('recaptcha');
+        $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
+        if (!$isValidRecaptcha) {
+            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+        }
 
         if (!Auth::attempt($validated)) {
             return $this->apiResponse(null, 'Email or password is wrong', 0, 401);
@@ -74,6 +71,17 @@ class AuthenticationController extends Controller
                 'user' => UserResource::make($user),
             ],
         );
+    }
+
+
+    function validateRecaptcha($recaptchaToken)
+    {
+        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET'),
+            'response' => $recaptchaToken,
+        ]);
+
+        return $response->json()['success'] ?? false;
     }
 
     public function logout(Request $request)
