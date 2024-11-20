@@ -28,6 +28,7 @@ class AuthenticationController extends Controller
         if (!$isValidRecaptcha) {
             return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
         }
+        unset($validated['recaptcha']);
 
         $accountId = Str::random(20);
         $validData['password'] = Hash::make($validData['password']);
@@ -53,11 +54,12 @@ class AuthenticationController extends Controller
         $validated = $request->validated();
 
         $recaptchaToken = $request->validated('recaptcha');
-        $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
+        return $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
 
-        // if (!$isValidRecaptcha) {
-        //     return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
-        // }
+        if (!$isValidRecaptcha) {
+            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+        }
+        unset($validated['recaptcha']);
 
         if (!Auth::attempt($validated)) {
             return $this->apiResponse(null, 'Email or password is wrong', 0, 401);
@@ -82,7 +84,7 @@ class AuthenticationController extends Controller
             'response' => $recaptchaToken,
         ]);
 
-        return $response->json()['success'] ?? false;
+        return $response->json();
     }
 
     public function logout(Request $request)
