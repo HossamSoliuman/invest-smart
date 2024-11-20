@@ -32,6 +32,7 @@ class RegisterRequest extends FormRequest
             'age' => 'required|integer|min:0|max:120',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'recaptcha' => 'required'
         ];
     }
 }

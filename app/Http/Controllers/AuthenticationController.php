@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -20,6 +21,14 @@ class AuthenticationController extends Controller
     public function register(RegisterRequest $request)
     {
         $validData = $request->validated();
+
+        $recaptchaToken = $request->validated('recaptcha');
+        $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
+        
+        if (!$isValidRecaptcha) {
+            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+        }
+
         $accountId = Str::random(20);
         $validData['password'] = Hash::make($validData['password']);
 
@@ -37,6 +46,16 @@ class AuthenticationController extends Controller
             ],
         );
     }
+    function validateRecaptcha($recaptchaToken)
+    {
+        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET'),
+            'response' => $recaptchaToken,
+        ]);
+
+        return $response->json()['success'] ?? false;
+    }
+
 
     public function login(LoginRequest $request)
     {
