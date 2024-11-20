@@ -53,13 +53,25 @@ class AuthenticationController extends Controller
     {
         $validated = $request->validated();
 
-        $recaptchaToken = $request->validated('recaptcha');
-        return $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
+        $recaptchaToken = $request->input('recaptcha');
+
+        if (!$recaptchaToken) {
+            return response()->json(['error' => 'reCAPTCHA token is required'], 422);
+        }
+
+        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET'),
+            'response' => $recaptchaToken,
+        ]);
+
+        $isValidRecaptcha = $response->json()['success'] ?? false;
 
         if (!$isValidRecaptcha) {
-            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+            return response()->json([
+                'error' => 'Invalid reCAPTCHA token',
+                'details' => $response->json(),
+            ], 422);
         }
-        unset($validated['recaptcha']);
 
         if (!Auth::attempt($validated)) {
             return $this->apiResponse(null, 'Email or password is wrong', 0, 401);
