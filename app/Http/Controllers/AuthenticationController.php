@@ -54,9 +54,10 @@ class AuthenticationController extends Controller
 
         $recaptchaToken = $request->validated('recaptcha');
         $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
-        if (!$isValidRecaptcha) {
-            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
-        }
+
+        // if (!$isValidRecaptcha) {
+        //     return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+        // }
 
         if (!Auth::attempt($validated)) {
             return $this->apiResponse(null, 'Email or password is wrong', 0, 401);
