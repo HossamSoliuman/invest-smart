@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class AuthenticationController extends Controller
 {
@@ -55,10 +56,15 @@ class AuthenticationController extends Controller
 
         $recaptchaToken = $request->validated('recaptcha');
 
-        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+
+        $body = [
             'secret' => env('RECAPTCHA_SECRET'),
             'response' => $recaptchaToken,
-        ]);
+            'remoteip' => IpUtils::anonymize($request->ip())
+        ];
+
+        return $response = Http::asForm()->post($url, $body);
 
         $isValidRecaptcha = $response->json()['success'] ?? false;
 

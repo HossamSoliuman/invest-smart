@@ -6,10 +6,13 @@ use App\Http\Controllers\TempFileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\IpUtils;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,11 +42,30 @@ Route::middleware('auth', 'admin')->group(function () {
 });
 
 Route::get('test', function () {
-    $accountId = 34356;
-    foreach (User::orderBy('id')->get() as $user) {
-        $user->update([
-            'account_id' => str_pad($accountId, 5, '0', STR_PAD_LEFT)
-        ]);
-        $accountId++;
-    }
+
+    return view('test');
+});
+
+Route::post('test', function (Request $request) {
+
+    $recaptchaToken = $request->input('g-recaptcha-response');
+
+    $url = "https://www.google.com/recaptcha/api/siteverify";
+
+    $body = [
+        'secret' => env('RECAPTCHA_SECRET'),
+        'response' => $recaptchaToken,
+        'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
+    ];
+
+    $response = Http::asForm()->post($url, $body);
+
+    return $result = json_decode($response);
+
+    $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+        'secret' => env('RECAPTCHA_SECRET'),
+        'response' => $recaptchaToken,
+    ]);
+
+    return $response->json();
 });
