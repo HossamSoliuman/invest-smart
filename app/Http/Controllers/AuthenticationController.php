@@ -64,7 +64,7 @@ class AuthenticationController extends Controller
             'remoteip' => IpUtils::anonymize($request->ip())
         ];
 
-        return $response = Http::asForm()->post($url, $body);
+        $response = Http::asForm()->post($url, $body);
 
         $isValidRecaptcha = $response->json()['success'] ?? false;
 
