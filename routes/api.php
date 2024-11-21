@@ -31,11 +31,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('verify/send', [VerificationController::class, 'send'])->name('auth.verify.send');
         Route::post('verify/check', [VerificationController::class, 'check'])->name('auth.mail.verify');
     });
-    Route::middleware('verified', 'throttle:3,1')->group(function () {
+    Route::middleware('verified')->group(function () {
         Route::post('withdraw', [UserController::class, 'withdraw']);
         Route::post('deposit', [UserController::class, 'deposit']);
     });
     Route::get('transactions', [UserDashboardController::class, 'transactions']);
-    Route::post('support', [SupportController::class, 'store'])->middleware('throttle:3,1');
+    Route::post('support', [SupportController::class, 'store']);
     Route::get('tickets', [UserController::class, 'tickets']);
 });
