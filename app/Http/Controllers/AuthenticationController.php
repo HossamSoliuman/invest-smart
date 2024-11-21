@@ -71,6 +71,8 @@ class AuthenticationController extends Controller
         if (!$isValidRecaptcha) {
             return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
         }
+        
+        unset($validated['recaptcha']);
 
         if (!Auth::attempt($validated)) {
             return $this->apiResponse(null, 'Email or password is wrong', 0, 401);
