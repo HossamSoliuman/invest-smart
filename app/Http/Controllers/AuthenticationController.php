@@ -90,7 +90,7 @@ class AuthenticationController extends Controller
 
         $response = Http::asForm()->post($url, $body);
 
-        return  json_decode($response);
+        return  $response;
     }
 
     public function logout(Request $request)
