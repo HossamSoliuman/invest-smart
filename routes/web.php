@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TempFileController;
@@ -47,25 +48,8 @@ Route::get('test', function () {
 });
 
 Route::post('test', function (Request $request) {
-
     $recaptchaToken = $request->input('g-recaptcha-response');
 
-    $url = "https://www.google.com/recaptcha/api/siteverify";
-
-    $body = [
-        'secret' => env('RECAPTCHA_SECRET'),
-        'response' => $recaptchaToken,
-        'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
-    ];
-
-    $response = Http::asForm()->post($url, $body);
-
-    return $result = json_decode($response);
-
-    $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
-        'secret' => env('RECAPTCHA_SECRET'),
-        'response' => $recaptchaToken,
-    ]);
-
-    return $response->json();
+    $contr = new AuthenticationController();
+    return $contr->validateRecaptcha($recaptchaToken);
 });

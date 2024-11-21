@@ -23,11 +23,12 @@ class AuthenticationController extends Controller
     {
         $validData = $request->validated();
 
-        $recaptchaToken = $request->validated('recaptcha');
-        $isValidRecaptcha = $this->validateRecaptcha($recaptchaToken);
 
+        $recaptchaToken = $request->validated('recaptcha');
+        $response = $this->validateRecaptcha($recaptchaToken);
+        $isValidRecaptcha = $response->json()['success'] ?? false;
         if (!$isValidRecaptcha) {
-            return response()->json(['error' => 'Invalid reCAPTCHA token'], 422);
+            return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
         }
         unset($validated['recaptcha']);
 
@@ -55,23 +56,11 @@ class AuthenticationController extends Controller
         $validated = $request->validated();
 
         $recaptchaToken = $request->validated('recaptcha');
-
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-
-        $body = [
-            'secret' => env('RECAPTCHA_SECRET'),
-            'response' => $recaptchaToken,
-            'remoteip' => IpUtils::anonymize($request->ip())
-        ];
-
-        $response = Http::asForm()->post($url, $body);
-
+        $response = $this->validateRecaptcha($recaptchaToken);
         $isValidRecaptcha = $response->json()['success'] ?? false;
-
         if (!$isValidRecaptcha) {
             return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
         }
-        
         unset($validated['recaptcha']);
 
         if (!Auth::attempt($validated)) {
@@ -92,12 +81,16 @@ class AuthenticationController extends Controller
 
     function validateRecaptcha($recaptchaToken)
     {
-        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('RECAPTCHA_SECRET'),
-            'response' => $recaptchaToken,
-        ]);
+        $url = "https://www.google.com/recaptcha/api/siteverify";
 
-        return $response->json();
+        $body = [
+            'secret' => env('RECAPTCHA_SECRET'),
+            'response' => $recaptchaToken
+        ];
+
+        $response = Http::asForm()->post($url, $body);
+
+        return  json_decode($response);
     }
 
     public function logout(Request $request)
