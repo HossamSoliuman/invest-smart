@@ -30,7 +30,7 @@ class AuthenticationController extends Controller
         if (!$isValidRecaptcha) {
             return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
         }
-        unset($validated['recaptcha']);
+        unset($validData['recaptcha']);
 
         $accountId = Str::random(20);
         $validData['password'] = Hash::make($validData['password']);
