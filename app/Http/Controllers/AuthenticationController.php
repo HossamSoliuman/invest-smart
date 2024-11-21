@@ -49,7 +49,7 @@ class AuthenticationController extends Controller
     }
 
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         // return $request->all();
 
