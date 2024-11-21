@@ -51,15 +51,9 @@ class AuthenticationController extends Controller
 
     public function login(LoginRequest $request)
     {
-        // return $request->all();
-
         $validated = $request->validated();
 
-        $recaptchaToken = $request->input('recaptcha');
-
-        if (!$recaptchaToken) {
-            return response()->json(['error' => 'reCAPTCHA token is required'], 422);
-        }
+        $recaptchaToken = $request->validated('recaptcha');
 
         $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => env('RECAPTCHA_SECRET'),
@@ -69,10 +63,7 @@ class AuthenticationController extends Controller
         $isValidRecaptcha = $response->json()['success'] ?? false;
 
         if (!$isValidRecaptcha) {
-            return response()->json([
-                'error' => 'Invalid reCAPTCHA token',
-                'details' => $response->json(),
-            ], 422);
+            return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
         }
 
         if (!Auth::attempt($validated)) {
