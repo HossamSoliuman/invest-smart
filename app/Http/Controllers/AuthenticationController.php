@@ -49,8 +49,10 @@ class AuthenticationController extends Controller
     }
 
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
+        return $request->all();
+        
         $validated = $request->validated();
 
         $recaptchaToken = $request->input('recaptcha');
