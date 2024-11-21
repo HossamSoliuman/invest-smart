@@ -85,9 +85,6 @@
                 safely ignore this email. No further action is required.</p>
         </div>
         <div class="footer">
-            <p>
-                Need help? <a href="https://invest-smartnow.com/support">Contact Support</a>
-            </p>
             <p>© {{ date('Y') }} Invest Smart. All rights reserved.</p>
         </div>
     </div>
