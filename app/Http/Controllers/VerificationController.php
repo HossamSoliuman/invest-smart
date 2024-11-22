@@ -25,16 +25,16 @@ class VerificationController extends Controller
         //     return $this->apiResponse(null, 'Please wait a minute after the last mail sent', 0);
         // }
 
-        // $validated = $request->validate([
-        //     'recaptcha' => 'required|string',
-        // ]);
+        $validated = $request->validate([
+            'recaptcha' => 'required|string',
+        ]);
 
-        // $recaptchaToken = $validated['recaptcha'];
-        // $response = $this->validateRecaptcha($recaptchaToken);
-        // $isValidRecaptcha = $response->json()['success'] ?? false;
-        // if (!$isValidRecaptcha) {
-        //     return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
-        // }
+        $recaptchaToken = $validated['recaptcha'];
+        $response = $this->validateRecaptcha($recaptchaToken);
+        $isValidRecaptcha = $response->json()['success'] ?? false;
+        if (!$isValidRecaptcha) {
+            return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
+        }
 
         $code = random_int(100000, 999999);
         $user->email_verification_code = $code;
@@ -51,15 +51,15 @@ class VerificationController extends Controller
     {
         $validated = $request->validate([
             'code' => 'required|integer',
-            // 'recaptcha' => 'required|string',
+            'recaptcha' => 'required|string',
         ]);
 
-        // $recaptchaToken = $validated['recaptcha'];
-        // $response = $this->validateRecaptcha($recaptchaToken);
-        // $isValidRecaptcha = $response->json()['success'] ?? false;
-        // if (!$isValidRecaptcha) {
-        //     return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
-        // }
+        $recaptchaToken = $validated['recaptcha'];
+        $response = $this->validateRecaptcha($recaptchaToken);
+        $isValidRecaptcha = $response->json()['success'] ?? false;
+        if (!$isValidRecaptcha) {
+            return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
+        }
 
         $user = $request->user();
         if (!$user->email_verification_code || $validated['code'] != $user->email_verification_code) {
@@ -72,7 +72,7 @@ class VerificationController extends Controller
 
         return $this->apiResponse(null, 'Verified');
     }
-    
+
     function validateRecaptcha($recaptchaToken)
     {
         $url = "https://www.google.com/recaptcha/api/siteverify";
