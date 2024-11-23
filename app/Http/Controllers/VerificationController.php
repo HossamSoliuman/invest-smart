@@ -17,13 +17,13 @@ class VerificationController extends Controller
     {
         $user = User::find($request->user()->id);
 
-        // if ($user->email_verification_count >= 3) {
-        //     return $this->apiResponse(null, 'You have sent 3 times, please connect with support', 0);
-        // }
+        if ($user->email_verification_count >= 3) {
+            return $this->apiResponse(null, 'You have sent 3 times, please connect with support', 0, 429);
+        }
+        if ($user->last_mail_at && $user->last_mail_at > Carbon::now()->subMinute()) {
+            return $this->apiResponse(null, 'Please wait a minute after the last mail sent', 0, 429);
+        }
 
-        // if ($user->last_mail_at && $user->last_mail_at > Carbon::now()->subMinute()) {
-        //     return $this->apiResponse(null, 'Please wait a minute after the last mail sent', 0);
-        // }
 
         $validated = $request->validate([
             'recaptcha' => 'required|string',

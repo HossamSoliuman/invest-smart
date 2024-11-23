@@ -17,8 +17,8 @@ class Verified
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if ($request->user()->email_verified)
+        if ($request->user()->email_verified)
+        return $this->apiResponse(null, 'Please verify your email', 0,401);
         return $next($request);
-        return $this->apiResponse(null, 'Please verify your email', 0);
     }
 }
