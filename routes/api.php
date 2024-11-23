@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
@@ -39,3 +40,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('support', [SupportController::class, 'store']);
     Route::get('tickets', [UserController::class, 'tickets']);
 });
+
+Route::post('contact-us', [ContactUsController::class, 'store']);

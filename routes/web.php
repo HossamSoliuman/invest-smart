@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TempFileController;
@@ -40,6 +41,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('support/{support}/{status}', [SupportController::class, 'updateStatus'])->name('support.update-status');
     Route::get('support/{support}', [SupportController::class, 'show'])->name('support.show');
     Route::post('/users/{id}/verify', [UserController::class, 'verify'])->name('users.verify');
+    Route::apiResource('contact-us', ContactUsController::class);
 });
 
 Route::get('test', function () {
