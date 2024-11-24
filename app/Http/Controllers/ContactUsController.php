@@ -30,7 +30,7 @@ class ContactUsController extends Controller
         }
         unset($validated['recaptcha']);
 
-        $contactUs = ContactUs::create();
+        $contactUs = ContactUs::create($validated);
         return $this->apiResponse($contactUs, 'Created');
     }
 
