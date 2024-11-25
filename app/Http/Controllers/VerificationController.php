@@ -15,16 +15,6 @@ class VerificationController extends Controller
 {
     public function send(Request $request)
     {
-        $user = User::find($request->user()->id);
-
-        if ($user->email_verification_count >= 3) {
-            return $this->apiResponse(null, 'You have sent 3 times, please connect with support', 0, 429);
-        }
-        if ($user->last_mail_at && $user->last_mail_at > Carbon::now()->subMinute()) {
-            return $this->apiResponse(null, 'Please wait a minute after the last mail sent', 0, 429);
-        }
-
-
         $validated = $request->validate([
             'recaptcha' => 'required|string',
         ]);
@@ -34,6 +24,18 @@ class VerificationController extends Controller
         $isValidRecaptcha = $response->json()['success'] ?? false;
         if (!$isValidRecaptcha) {
             return $this->apiResponse(null, 'Invalid reCAPTCHA token', 0);
+        }
+
+        $user = User::find($request->user()->id);
+        
+        if ($user->email_verified_at) {
+            return $this->apiResponse(null, 'Already Verified', 0, 429);
+        }
+        if ($user->email_verification_count >= 3) {
+            return $this->apiResponse(null, 'You have sent 3 times, please connect with support', 0, 429);
+        }
+        if ($user->last_mail_at && $user->last_mail_at > Carbon::now()->subMinute()) {
+            return $this->apiResponse(null, 'Please wait a minute after the last mail sent', 0, 429);
         }
 
         $code = random_int(100000, 999999);
