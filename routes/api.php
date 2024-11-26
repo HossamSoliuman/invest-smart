@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('user', [AuthenticationController::class, 'user']);
         Route::post('logout', [AuthenticationController::class, 'logout']);
-        Route::post('update', [AuthenticationController::class, 'update'])->name('auth.update');
+        Route::post('update', [AuthenticationController::class, 'update']);
         Route::post('verify/send', [VerificationController::class, 'send']);
         Route::post('verify/check', [VerificationController::class, 'check']);
     });
