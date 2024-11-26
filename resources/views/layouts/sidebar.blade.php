@@ -70,6 +70,10 @@
                 <a href="{{ route('contact-us.index') }}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-message fa-fw me-3"></i><span>Contact Us</span>
                 </a>
+                <a href="{{ route('user.update') }}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-user-edit fa-fw me-3"></i><span>Update Information</span>
+                </a>
+
 
                 <a href="#" class="list-group-item list-group-item-action py-2 ripple">
                     <form action="{{ route('logout') }}" method="post"> @csrf

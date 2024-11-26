@@ -108,20 +108,28 @@ class AuthenticationController extends Controller
         $user = $request->user();
         $validated = $request->validated();
 
+        if ($validated['password'] == null) {
+            unset($validated['password']);
+        }
+        
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         }
 
         $user->fill($validated)->save();
 
+        if ($request->expectsJson()) {
+            return $this->apiResponse(
+                [
+                    'user' => UserResource::make($user),
+                ],
+                'User updated successfully'
+            );
+        }
 
-        return $this->apiResponse(
-            [
-                'user' => UserResource::make($user),
-            ],
-            'User updated successfully'
-        );
+        return redirect()->route('user.update')->with('success', 'User updated successfully');
     }
+
     function user(Request $request)
     {
         return UserResource::make($request->user());
