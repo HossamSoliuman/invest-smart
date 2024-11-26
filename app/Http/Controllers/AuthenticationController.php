@@ -115,7 +115,7 @@ class AuthenticationController extends Controller
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         }
-return $validated;
+        
         $user->fill($validated)->save();
 
         if ($request->expectsJson()) {
