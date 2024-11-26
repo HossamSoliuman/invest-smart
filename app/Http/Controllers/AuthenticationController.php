@@ -105,6 +105,7 @@ class AuthenticationController extends Controller
 
     public function update(UpdateAuthRequest $request)
     {
+        return 'here';
         $user = $request->user();
         $validated = $request->validated();
 
