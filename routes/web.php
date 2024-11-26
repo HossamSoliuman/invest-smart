@@ -42,7 +42,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('support/{support}', [SupportController::class, 'show'])->name('support.show');
     Route::post('/users/{id}/verify', [UserController::class, 'verify'])->name('users.verify');
     Route::apiResource('contact-us', ContactUsController::class);
-    Route::post('update', [AuthenticationController::class, 'update'])->name('auth.update');
+    // Route::post('update', [AuthenticationController::class, 'update'])->name('auth.update');
 
     Route::get('update-info', function (Request $request) {
         return view('updateAccount')->with('user', $request->user());
