@@ -108,14 +108,12 @@ class AuthenticationController extends Controller
         $user = $request->user();
         $validated = $request->validated();
 
-        if ($validated['password'] == null) {
+        if (empty($validated['password'])) {
             unset($validated['password']);
-        }
-
-        if (isset($validated['password'])) {
+        } else {
             $validated['password'] = Hash::make($validated['password']);
         }
-        
+
         $user->fill($validated)->save();
 
         if ($request->expectsJson()) {
@@ -129,6 +127,7 @@ class AuthenticationController extends Controller
 
         return redirect()->route('user.update')->with('success', 'User updated successfully');
     }
+
 
     function user(Request $request)
     {
